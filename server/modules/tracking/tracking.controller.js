@@ -35,7 +35,7 @@ export const trackClick = async (req, res) => {
       offerId: link.offer._id,
       ip: req.ip,
       userAgent: req.headers["user-agent"],
-      referrer: req.headers.referrer || "direct",
+      referer: req.headers.referer || "direct",
       timestamp: Date.now(),
     };
 
