@@ -1,6 +1,6 @@
 import { Queue } from "bullmq";
-import redisConnection from "../config/queue";
+import redisQueueConnection from "../config/redisQueue.js";
 
 export const clickQueue = new Queue("clickQueue", {
-  connection: redisConnection,
+  connection: redisQueueConnection,
 });
