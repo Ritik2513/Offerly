@@ -15,6 +15,18 @@ const clickSchema = new mongoose.Schema(
       index: true,
     },
 
+    affiliate: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      index: true,
+    },
+
+    offer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Offer",
+      index: true,
+    },
+
     //attribution core
     ip: {
       type: String,

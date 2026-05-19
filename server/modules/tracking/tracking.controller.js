@@ -30,9 +30,9 @@ export const trackClick = async (req, res) => {
     if (!link) return res.status(404).send("Invalid tracking link");
 
     const clickData = {
-      trackingLinkId: link._id,
-      affiliateId: link.affiliate,
-      offerId: link.offer._id,
+      trackingLinkId: link._id.toString(),
+      affiliate: link.affiliate.toString(),
+      offer: link.offer._id.toString(),
       ip: req.ip,
       userAgent: req.headers["user-agent"],
       referer: req.headers.referer || "direct",

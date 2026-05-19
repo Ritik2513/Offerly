@@ -10,6 +10,7 @@ const require = createRequire(import.meta.url);
 const UAParser = require("ua-parser-js");
 
 import Click from "../modules/tracking/click.model.js";
+import { incrementClickStats } from "../utils/analytics.helper.js";
 
 await mongoose.connect(process.env.MONGO_URI);
 console.log("Worker MongoDB Connected");
@@ -18,7 +19,8 @@ console.log("Worker MongoDB Connected");
 const worker = new Worker(
   "clickQueue",
   async (job) => {
-    const { trackingLinkId, ip, userAgent, referer } = job.data;
+    const { trackingLinkId, affiliate, offer, ip, userAgent, referer } =
+      job.data;
 
     console.log("Processing click job:", trackingLinkId);
 
@@ -34,7 +36,7 @@ const worker = new Worker(
     const browser = parser.getBrowser().name || "Unknown";
     const os = parser.getOS().name || "Unknown";
 
-    await Click.create({
+    const clickDoc = await Click.create({
       trackingLink: trackingLinkId,
       clickId: nanoid(12), //Generate public click id
       ip,
@@ -44,9 +46,13 @@ const worker = new Worker(
       browser,
       os,
       referer,
+      affiliate,
+      offer,
     });
 
-    console.log("Click saved to MongoDB");
+    console.log("Click saved to MongoDB", clickDoc);
+
+    await incrementClickStats(clickDoc);
   },
   { connection: redisConnection },
 );
