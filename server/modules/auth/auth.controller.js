@@ -36,3 +36,10 @@ export const logout = asyncHandler(async (req, res) => {
     .clearCookie("token", cookieOptions)
     .json(new ApiResponse(200, {}, "Logged out successfully"));
 });
+
+export const getMe = async (req, res) => {
+  res.json({
+    success: true,
+    user: req.user,
+  });
+};
