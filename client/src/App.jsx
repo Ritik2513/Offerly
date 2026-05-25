@@ -5,18 +5,21 @@ import Dashboard from "./pages/Dashboard";
 import Offers from "./pages/Offers";
 import Analytics from "./pages/Analytics";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardLayout from "./layouts/DashboardLayout";
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/offers" element={<Offers />} />
-            <Route path="/analytics" element={<Analytics />} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/offers" element={<Offers />} />
+              <Route path="/analytics" element={<Analytics />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

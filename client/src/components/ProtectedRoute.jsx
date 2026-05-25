@@ -5,7 +5,7 @@ export default function ProtectedRoute() {
   const { user, loading } = useAuth();
 
   if (loading) return <div className="p-10">Checking session...</div>;
-  if (!user) return <Navigate to="/" replace />;
+  if (!user) return <Navigate to="/login" replace />;
 
   return <Outlet />;
 }

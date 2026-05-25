@@ -71,3 +71,30 @@ export const getAffiliateStats = async (req, res) => {
     res.status(500).json({ message: "Error fetching affiliate stats" });
   }
 };
+
+export const getClickTrends = async (req, res) => {
+  try {
+    const trendData = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+
+      const date = d.toISOString().slice(0, 10);
+      const total =
+        (await redisQueueConnection.hget(`stats:click:${date}`, "total")) || 0;
+
+      trendData.push({
+        date: date.slice(5),
+        clicks: Number(total),
+      });
+    }
+
+    res.json({
+      success: true,
+      data: trendData,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching trends" });
+  }
+};

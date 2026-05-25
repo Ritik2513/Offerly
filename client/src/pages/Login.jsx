@@ -91,7 +91,7 @@ const Login = () => {
           <div className="flex gap-4 mb-6">
             <button
               type="button"
-              className="flex-1 flex items-center justify-center gap-2 border rounded-xl py-3 font-medium hover:bg-gray-50 transition"
+              className="flex-1 flex items-center justify-center gap-2 border border-gray-300 rounded-xl py-3 font-medium hover:bg-gray-50 transition cursor-pointer"
             >
               <img
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -119,7 +119,7 @@ const Login = () => {
               required
               onChange={handleChange}
               placeholder="operator@offerly.io"
-              className="mt-1 w-full p-3 border rounded-xl outline-none shadow-sm"
+              className="mt-1 w-full p-2 border border-gray-300 rounded-xl outline-none shadow-sm"
             />
           </div>
 
@@ -143,7 +143,7 @@ const Login = () => {
               required
               onChange={handleChange}
               placeholder="••••••••"
-              className="mt-1 w-full p-3 border rounded-xl outline-none shadow-sm"
+              className="mt-1 w-full p-2 border border-gray-300 rounded-xl outline-none shadow-sm"
             />
           </div>
 
@@ -159,7 +159,7 @@ const Login = () => {
             disabled={loading}
             className="w-full py-3 rounded-xl font-semibold text-white 
   bg-gradient-to-r from-indigo-500 to-pink-500 
-  hover:opacity-90 transition shadow-md disabled:opacity-60"
+  hover:opacity-90 transition shadow-md disabled:opacity-60 cursor-pointer"
           >
             {loading ? "Signing in..." : "Sign in"}
           </button>
