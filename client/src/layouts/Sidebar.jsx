@@ -8,8 +8,10 @@ import {
   Link2,
   Users,
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const { user } = useAuth();
   const navItems = [
     {
       name: "Dashboard",
@@ -26,11 +28,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/tracking-links",
       icon: Link2,
     },
-    {
-      name: "Affiliates",
-      path: "/affiliates",
-      icon: Users,
-    },
+    ...(user?.role === "admin"
+      ? [
+          {
+            name: "Affiliates",
+            path: "/affiliates",
+            icon: Users,
+          },
+        ]
+      : ""),
+
     {
       name: "Analytics",
       path: "/analytics",
