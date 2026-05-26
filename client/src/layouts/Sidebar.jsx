@@ -6,6 +6,7 @@ import {
   Box,
   X,
   Link2,
+  Users,
 } from "lucide-react";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -24,6 +25,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       name: "Tracking Links",
       path: "/tracking-links",
       icon: Link2,
+    },
+    {
+      name: "Affiliates",
+      path: "/affiliates",
+      icon: Users,
     },
     {
       name: "Analytics",

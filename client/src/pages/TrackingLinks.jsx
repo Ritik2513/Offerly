@@ -95,7 +95,7 @@ const TrackingLinks = () => {
       {/* CARD */}
       <div className="bg-white border border-gray-200 rounded-3xl shadow-sm overflow-hidden">
         {/* TOP */}
-        <div className="border-b border-gray-200 px-6 py-5 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="border-b border-gray-200 px-6 py-5 bg-linear-to-r from-blue-50 to-indigo-50">
           <h2 className="text-lg font-semibold text-gray-900">
             Generate Tracking Link
           </h2>

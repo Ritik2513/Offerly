@@ -7,6 +7,7 @@ import Analytics from "./pages/Analytics";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import TrackingLinks from "./pages/TrackingLinks";
+import Affiliates from "./pages/Affiliates";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
               <Route path="/offers" element={<Offers />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/tracking-links" element={<TrackingLinks />} />
+              <Route path="/affiliates" element={<Affiliates />} />
             </Route>
           </Route>
         </Routes>
