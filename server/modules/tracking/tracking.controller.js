@@ -17,7 +17,7 @@ export const generateTrackingLink = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     message: "Tracking link created",
-    trackingUrl: `${process.env.CLIENT_URL}/t/${slug}`,
+    trackingUrl: `${process.env.SERVER_URL}/api/tracking/t/${slug}`,
   });
 });
 

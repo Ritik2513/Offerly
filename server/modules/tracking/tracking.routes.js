@@ -6,7 +6,12 @@ import { postbackConversion } from "./postback.controller.js";
 const router = express.Router();
 
 //only affiliates generate link
-router.post("/generate", protect, authorize("affiliate"), generateTrackingLink);
+router.post(
+  "/generate",
+  protect,
+  authorize("admin", "affiliate"),
+  generateTrackingLink,
+);
 
 //public route (no auth)
 router.get("/t/:slug", trackClick);

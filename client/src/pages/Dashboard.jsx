@@ -96,7 +96,7 @@ const Dashboard = () => {
           </button>
 
           {/* EXPORT */}
-          <button className="flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-gradient-to-r from-[#7C5CFC] to-[#D15BFF] text-white shadow-md hover:opacity-90 transition">
+          <button className="flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-linear-to-r from-[#7C5CFC] to-[#D15BFF] text-white shadow-md hover:opacity-90 transition">
             <Download size={18} />
             <span className="text-sm font-medium">Export</span>
           </button>

@@ -4,6 +4,7 @@ import authRoutes from "../modules/auth/auth.routes.js";
 import offerRoutes from "../modules/offer/offer.routes.js";
 import trackingRoutes from "../modules/tracking/tracking.routes.js";
 import analyticsRoutes from "../modules/analytics/analytics.routes.js";
+import userRoutes from "../modules/user/user.routes.js";
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.use("/auth", authRoutes);
 router.use("/offers", offerRoutes);
 router.use("/tracking", trackingRoutes);
 router.use("/analytics", analyticsRoutes);
+router.use("/users", userRoutes);
 
 // router.get("/me", protect, (req, res) => {
 //   res.json(req.user);
