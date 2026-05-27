@@ -5,6 +5,7 @@ import offerRoutes from "../modules/offer/offer.routes.js";
 import trackingRoutes from "../modules/tracking/tracking.routes.js";
 import analyticsRoutes from "../modules/analytics/analytics.routes.js";
 import userRoutes from "../modules/user/user.routes.js";
+import conversionRoutes from "../modules/conversions/conversion.routes.js";
 
 const router = Router();
 
@@ -17,13 +18,6 @@ router.use("/offers", offerRoutes);
 router.use("/tracking", trackingRoutes);
 router.use("/analytics", analyticsRoutes);
 router.use("/users", userRoutes);
-
-// router.get("/me", protect, (req, res) => {
-//   res.json(req.user);
-// });
-
-// router.get("/admin-test", protect, authorize("admin"), (req, res) => {
-//   res.json({ message: "Welcome admin" });
-// });
+router.use("/conversions", conversionRoutes);
 
 export default router;

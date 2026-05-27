@@ -1,5 +1,5 @@
 import Click from "../tracking/click.model.js";
-import Conversion from "../tracking/conversion.model.js";
+import Conversion from "../conversions/conversion.model.js";
 import TrackingLink from "../tracking/trackingLink.model.js";
 import Offer from "../offer/offer.model.js";
 

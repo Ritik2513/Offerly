@@ -7,6 +7,7 @@ import {
   X,
   Link2,
   Users,
+  BadgeDollarSign,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -27,6 +28,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       name: "Tracking Links",
       path: "/tracking-links",
       icon: Link2,
+    },
+    {
+      name: "Conversions",
+      path: "/conversions",
+      icon: BadgeDollarSign,
     },
     ...(user?.role === "admin"
       ? [
@@ -64,7 +70,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       `}
     >
       {/* TOP */}
-      <div className="h-16 border-b border-gray-200 px-5 flex items-center justify-between">
+      <div className="h-16 border-b border-gray-200 px-5 flex items-center justify-between font-inter">
         {/* BRAND */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-sm">
@@ -88,7 +94,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       </div>
 
       {/* NAVIGATION */}
-      <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto font-inter">
         <p className="uppercase tracking-wider text-[11px] text-gray-400 px-3 mb-3 font-semibold">
           Workspace
         </p>
@@ -111,7 +117,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       </nav>
 
       {/* BOTTOM */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-gray-200 font-inter">
         <div className="rounded-2xl bg-indigo-50 p-4">
           <p className="text-sm font-semibold text-gray-800">Need Help?</p>
 
