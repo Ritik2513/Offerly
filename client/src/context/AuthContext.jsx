@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import API from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   //check login on app start
   const fetchUser = async () => {
@@ -14,6 +16,7 @@ export const AuthProvider = ({ children }) => {
       setUser(data.user);
     } catch (err) {
       setUser(null);
+      navigate("/login")
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -12,21 +12,19 @@ import Affiliates from "./pages/Affiliates";
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
 
-          <Route element={<ProtectedRoute />}>
-            <Route element={<DashboardLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/offers" element={<Offers />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/tracking-links" element={<TrackingLinks />} />
-              <Route path="/affiliates" element={<Affiliates />} />
-            </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/offers" element={<Offers />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/tracking-links" element={<TrackingLinks />} />
+            <Route path="/affiliates" element={<Affiliates />} />
           </Route>
-        </Routes>
-      </BrowserRouter>
+        </Route>
+      </Routes>
       <Toaster richColors position="top-right" duration={2500} />
     </>
   );

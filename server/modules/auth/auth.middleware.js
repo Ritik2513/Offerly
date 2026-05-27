@@ -13,5 +13,11 @@ export const protect = asyncHandler(async (req, res, next) => {
 
   if (!req.user) throw new ApiError(401, "User no longer exists");
 
+  // User disabled
+  if (!req.user.isActive) {
+    res.clearCookie("token");
+    throw new ApiError(401, "Account disabled by admin");
+  }
+
   next();
 });
