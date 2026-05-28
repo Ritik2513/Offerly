@@ -5,13 +5,13 @@ import { clickQueue } from "../../queues/click.queue.js";
 
 //Generate tracking link for affiliate
 export const generateTrackingLink = asyncHandler(async (req, res) => {
-  const { offerId } = req.body;
+  const { offerId, affiliateId } = req.body;
 
   const slug = nanoid(8);
 
   const link = await TrackingLink.create({
     slug,
-    affiliate: req.user._id,
+    affiliate: req.user.role === "admin" ? affiliateId : req.user._id,
     offer: offerId,
   });
 

@@ -48,7 +48,7 @@ const ConversionTable = ({ conversions, loading }) => {
               </th>
 
               <th className="text-left px-6 py-4 font-semibold text-gray-600">
-                Revenue
+                Payout
               </th>
 
               <th className="text-left px-6 py-4 font-semibold text-gray-600">

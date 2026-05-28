@@ -30,7 +30,12 @@ const conversionSchema = new mongoose.Schema(
       index: true,
     },
 
-    amount: {
+    // amount: {
+    //   type: Number,
+    //   required: true,
+    // },
+
+    revenue: {
       type: Number,
       required: true,
     },
@@ -40,10 +45,18 @@ const conversionSchema = new mongoose.Schema(
       required: true,
     },
 
+    // advertiser approved conversion?
     status: {
       type: String,
       enum: ["pending", "approved", "rejected"],
       default: "approved",
+    },
+
+    // affiliate already paid?
+    payoutStatus: {
+      type: String,
+      enum: ["pending", "paid"],
+      default: "pending",
     },
   },
   { timestamps: true },

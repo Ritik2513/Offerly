@@ -32,7 +32,7 @@ export const postbackConversion = async (req, res) => {
       trackingLink: trackingLink._id,
       offer: offer._id,
       affiliate: trackingLink.affiliate,
-      amount: revenue,
+      revenue,
       payout: affiliatePayout,
     });
 
