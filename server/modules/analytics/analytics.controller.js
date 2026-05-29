@@ -146,7 +146,7 @@ export const getAffiliateAnalytics = async (req, res) => {
     const recentConversions = await Conversion.find({
       affiliate: affiliateId,
     })
-      .populate("offer", "name")
+      .populate("offer", "title")
       .sort({
         createdAt: -1,
       })

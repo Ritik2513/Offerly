@@ -26,6 +26,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       icon: ShoppingBag,
     },
     {
+      name: "Affiliate",
+      path: "/create-affiliate",
+      icon: Users,
+    },
+    {
       name: "Tracking Links",
       path: "/tracking-links",
       icon: Link2,
@@ -40,7 +45,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/payouts",
       icon: Wallet,
     },
-    ...(user?.role === "admin"
+    ...(user?.role === "affiliate"
       ? [
           {
             name: "Affiliates",

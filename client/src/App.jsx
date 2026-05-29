@@ -7,9 +7,10 @@ import Analytics from "./pages/Analytics";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import TrackingLinks from "./pages/TrackingLinks";
-import Affiliates from "./pages/Affiliates";
 import Conversions from "./pages/Conversions";
 import Payouts from "./pages/Payouts";
+import AffiliateDashboard from "./pages/AffiliateDashboard";
+import Affiliates from "./pages/Affiliates";
 
 const App = () => {
   return (
@@ -22,7 +23,8 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/offers" element={<Offers />} />
             <Route path="/tracking-links" element={<TrackingLinks />} />
-            <Route path="/affiliates" element={<Affiliates />} />
+            <Route path="/create-affiliate" element={<Affiliates />} />
+            <Route path="/affiliates" element={<AffiliateDashboard />} />
             <Route path="/conversions" element={<Conversions />} />
             <Route path="/payouts" element={<Payouts />} />
             <Route path="/analytics" element={<Analytics />} />
