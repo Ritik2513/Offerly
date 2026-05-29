@@ -9,20 +9,33 @@ const Payouts = () => {
   const [analytics, setAnalytics] = useState({});
   const [loading, setLoading] = useState(true);
 
+  const fetchPayouts = async () => {
+    try {
+      const { data } = await API.get("/payouts");
+      setPayout(data.payouts || []);
+      setAnalytics(data.analytics || {});
+    } catch (error) {
+      toast.error("Failed to fetch payouts");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchPayouts = async () => {
-      try {
-        const { data } = await API.get("/payouts");
-        setPayout(data.payouts || []);
-        setAnalytics(data.analytics || {});
-      } catch (error) {
-        toast.error("Failed to fetch payouts");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPayouts();
   }, []);
+
+  const handleMarkPaid = async (id) => {
+    try {
+      const { data } = await API.patch(`/payouts/${id}/pay`);
+
+      toast.success(data.message);
+
+      fetchPayouts();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update payout");
+    }
+  };
 
   return (
     <>
@@ -44,7 +57,11 @@ const Payouts = () => {
         <PayoutStats analytics={analytics} />
 
         {/* TABLE */}
-        <PayoutTable payouts={payouts} loading={loading} />
+        <PayoutTable
+          payouts={payouts}
+          loading={loading}
+          onMarkPaid={handleMarkPaid}
+        />
       </div>
     </>
   );

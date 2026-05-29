@@ -1,12 +1,6 @@
-import {
-  CheckCircle2,
-  Clock3,
-  IndianRupee,
-  Mail,
-  User2,
-} from "lucide-react";
+import { CheckCircle2, Clock3, IndianRupee, Mail, User2 } from "lucide-react";
 
-const PayoutTable = ({ payouts, loading }) => {
+const PayoutTable = ({ payouts, loading, onMarkPaid }) => {
   if (loading) {
     return (
       <div className="bg-white border border-gray-200 rounded-3xl p-10 shadow-sm">
@@ -14,9 +8,7 @@ const PayoutTable = ({ payouts, loading }) => {
           <div className="flex items-center gap-3 text-gray-500">
             <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
 
-            <span className="text-sm font-medium">
-              Loading payouts...
-            </span>
+            <span className="text-sm font-medium">Loading payouts...</span>
           </div>
         </div>
       </div>
@@ -90,6 +82,10 @@ const PayoutTable = ({ payouts, loading }) => {
               <th className="px-6 py-4 text-left text-xs font-semibold  tracking-wider text-gray-500">
                 Date
               </th>
+
+              <th className="px-6 py-4 text-left text-xs font-semibold  tracking-wider text-gray-500">
+                Actions
+              </th>
             </tr>
           </thead>
 
@@ -136,7 +132,7 @@ const PayoutTable = ({ payouts, loading }) => {
                     <IndianRupee size={16} />
                     {item.amount}
                   </div>
-                </td> 
+                </td>
 
                 {/* STATUS */}
                 <td className="px-6 py-5">
@@ -165,6 +161,27 @@ const PayoutTable = ({ payouts, loading }) => {
                 {/* DATE */}
                 <td className="px-6 py-5 text-sm text-gray-500 font-medium">
                   {new Date(item.createdAt).toLocaleDateString()}
+                </td>
+
+                {/* Actions */}
+                <td className="px-6 py-5">
+                  <button
+                    onClick={() => onMarkPaid(item._id)}
+                    disabled={item.status === "paid"}
+                    className={`
+      px-4 py-2 rounded-xl
+      text-sm font-medium
+      transition
+
+      ${
+        item.status === "paid"
+          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+          : "bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer"
+      }
+    `}
+                  >
+                    {item.status === "paid" ? "Paid" : "Mark Paid"}
+                  </button>
                 </td>
               </tr>
             ))}
@@ -257,6 +274,23 @@ const PayoutTable = ({ payouts, loading }) => {
                 </p>
               </div>
             </div>
+
+            <button
+              onClick={() => onMarkPaid(item._id)}
+              disabled={item.status === "paid"}
+              className={`
+    mt-4 w-full py-3 rounded-xl
+    text-sm font-medium transition
+
+    ${
+      item.status === "paid"
+        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+        : "bg-indigo-600 text-white hover:bg-indigo-700"
+    }
+  `}
+            >
+              {item.status === "paid" ? "Paid" : "Mark Paid"}
+            </button>
           </div>
         ))}
       </div>

@@ -89,3 +89,41 @@ export const getPayout = async (req, res) => {
     });
   }
 };
+
+export const markPayoutPaid = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const payout = await Payout.findById(id);
+
+    if (!payout) {
+      return res.status(404).json({
+        success: false,
+        message: "Payout not found",
+      });
+    }
+
+    if (payout.status === "paid") {
+      return res.status(400).json({
+        success: false,
+        message: "Payout already paid",
+      });
+    }
+
+    payout.status = "paid";
+
+    payout.paidAt = new Date();
+
+    await payout.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Payout marked as paid",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update payout",
+    });
+  }
+};
