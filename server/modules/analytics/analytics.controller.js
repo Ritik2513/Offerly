@@ -1,4 +1,8 @@
 import redisQueueConnection from "../../config/redisQueue.js";
+import TrackingLink from "../tracking/trackingLink.model.js";
+import Click from "../tracking/click.model.js";
+import Conversion from "../conversions/conversion.model.js";
+import Payout from "../payouts/payout.model.js";
 
 //get /api/analytics/today
 export const getTodayStats = async (req, res) => {
@@ -96,5 +100,86 @@ export const getClickTrends = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching trends" });
+  }
+};
+
+//get affiliate analytics
+export const getAffiliateAnalytics = async (req, res) => {
+  try {
+    const affiliateId = req.user._id;
+
+    // tracking links
+    const links = await TrackingLink.find({
+      affiliate: affiliateId,
+    });
+
+    const linkIds = links.map((l) => l._id);
+
+    // clicks
+    const totalClicks = await Click.countDocuments({
+      trackingLink: {
+        $in: linkIds,
+      },
+    });
+
+    // conversions
+    const conversions = await Conversion.find({
+      affiliate: affiliateId,
+    });
+
+    const totalConversions = conversions.length;
+
+    // revenue
+    const totalRevenue = conversions.reduce(
+      (acc, curr) => acc + curr.amount,
+      0,
+    );
+
+    // payout
+    const totalPayout = conversions.reduce((acc, curr) => acc + curr.payout, 0);
+
+    // conversion rate
+    const conversionRate =
+      totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(2) : 0;
+
+    // recent conversions
+    const recentConversions = await Conversion.find({
+      affiliate: affiliateId,
+    })
+      .populate("offer", "name")
+      .sort({
+        createdAt: -1,
+      })
+      .limit(5);
+
+    // payouts
+    const payouts = await Payout.find({
+      affiliate: affiliateId,
+    }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+
+      analytics: {
+        totalClicks,
+        totalConversions,
+        totalRevenue,
+        totalPayout,
+        conversionRate,
+      },
+
+      recentConversions,
+
+      payouts,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch affiliate analytics",
+    });
   }
 };

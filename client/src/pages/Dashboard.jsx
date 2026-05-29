@@ -34,7 +34,7 @@ const Dashboard = () => {
             API.get("/analytics/today"),
             API.get("/analytics/countries"),
             API.get("/analytics/offers"),
-            API.get("/analytics/affiliates"),
+            API.get("/analytics/admin"),
             API.get("/analytics/trends"),
           ]);
 
