@@ -78,7 +78,7 @@ const OfferTable = ({ offers, loading, onEdit, onDelete }) => {
                     {offer.description}
                   </td>
 
-                  <td className="px-6 py-5 font-medium">${offer.payout}</td>
+                  <td className="px-6 py-5 font-medium">₹{offer.payout}</td>
 
                   <td className="px-6 py-5">
                     <OfferStatusBadge status={offer.status} />

@@ -2,6 +2,7 @@ import Click from "../tracking/click.model.js";
 import Conversion from "../conversions/conversion.model.js";
 import TrackingLink from "../tracking/trackingLink.model.js";
 import Offer from "../offer/offer.model.js";
+import Payout from "../payouts/payout.model.js";
 
 export const postbackConversion = async (req, res) => {
   try {
@@ -27,13 +28,20 @@ export const postbackConversion = async (req, res) => {
     const revenue = Number(amount) || offer.payout;
     const affiliatePayout = offer.payout;
 
-    await Conversion.create({
+    const conversion = await Conversion.create({
       click: click._id,
       trackingLink: trackingLink._id,
       offer: offer._id,
       affiliate: trackingLink.affiliate,
       revenue,
       payout: affiliatePayout,
+    });
+
+    await Payout.create({
+      affiliate: trackingLink.affiliate,
+      conversions: conversion._id,
+      amount: affiliatePayout,
+      status: "pending",
     });
 
     // mark click converted

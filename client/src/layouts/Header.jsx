@@ -67,7 +67,7 @@ const Header = () => {
                 {user?.name || "User"}
               </p>
 
-              <p className="text-xs text-gray-500">Admin</p>
+              <p className="text-xs text-gray-500">{user?.role || ""} </p>
             </div>
 
             <ChevronDown

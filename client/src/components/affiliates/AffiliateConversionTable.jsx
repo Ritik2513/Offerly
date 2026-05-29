@@ -77,13 +77,13 @@ const AffiliateConversionTable = ({ conversions }) => {
 
                 <td className="px-6 py-5">
                   <span className="font-semibold text-green-600">
-                    ${item.amount}
+                    ₹{item.revenue}
                   </span>
                 </td>
 
                 <td className="px-6 py-5">
                   <span className="font-semibold text-indigo-600">
-                    ${item.payout}
+                    ₹{item.payout}
                   </span>
                 </td>
 
@@ -123,7 +123,7 @@ const AffiliateConversionTable = ({ conversions }) => {
                 <p className="text-sm text-gray-500">Revenue</p>
 
                 <p className="font-bold text-green-600">
-                  ${item.amount}
+                  ₹{item.amount}
                 </p>
               </div>
             </div>
@@ -132,7 +132,7 @@ const AffiliateConversionTable = ({ conversions }) => {
               <span className="text-sm text-gray-500">Payout</span>
 
               <span className="font-semibold text-indigo-600">
-                ${item.payout}
+                ₹{item.payout}
               </span>
             </div>
           </div>

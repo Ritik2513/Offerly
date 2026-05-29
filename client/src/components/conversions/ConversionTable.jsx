@@ -1,5 +1,5 @@
 import ConversionStatusBadge from "./ConversionStatusBadge";
-import { DollarSign, CalendarDays } from "lucide-react";
+import { DollarSign, CalendarDays, IndianRupee } from "lucide-react";
 
 const ConversionTable = ({ conversions, loading }) => {
   if (loading) {
@@ -113,7 +113,7 @@ const ConversionTable = ({ conversions, loading }) => {
                 {/* REVENUE */}
                 <td className="px-6 py-5">
                   <div className="flex items-center gap-2 font-semibold text-gray-900">
-                    <DollarSign size={16} className="text-green-600" />
+                    <IndianRupee size={16} className="text-green-600" />
                     {conversion.payout}
                   </div>
                 </td>
@@ -129,9 +129,7 @@ const ConversionTable = ({ conversions, loading }) => {
                     <CalendarDays size={15} />
 
                     <span>
-                      {new Date(
-                        conversion.createdAt,
-                      ).toLocaleDateString()}
+                      {new Date(conversion.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                 </td>
@@ -144,10 +142,7 @@ const ConversionTable = ({ conversions, loading }) => {
       {/* MOBILE CARDS */}
       <div className="lg:hidden divide-y divide-gray-100">
         {conversions.map((conversion) => (
-          <div
-            key={conversion._id}
-            className="p-5 hover:bg-gray-50 transition"
-          >
+          <div key={conversion._id} className="p-5 hover:bg-gray-50 transition">
             {/* TOP */}
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -196,7 +191,7 @@ const ConversionTable = ({ conversions, loading }) => {
                 </p>
 
                 <div className="flex items-center gap-2">
-                  <DollarSign size={16} className="text-green-600" />
+                  <IndianRupee size={16} className="text-green-600" />
 
                   <p className="font-semibold text-gray-900">
                     {conversion.payout}
@@ -214,9 +209,7 @@ const ConversionTable = ({ conversions, loading }) => {
                   <CalendarDays size={15} />
 
                   <p className="text-sm font-medium">
-                    {new Date(
-                      conversion.createdAt,
-                    ).toLocaleDateString()}
+                    {new Date(conversion.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               </div>

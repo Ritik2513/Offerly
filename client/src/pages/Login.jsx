@@ -34,7 +34,11 @@ const Login = () => {
       setUser(data.user);
 
       toast.success("Welcome back", { id: toastId });
-      navigate("/dashboard");
+      if (data.user.role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/affiliate");
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || "Invalid credentials", {
         id: toastId,
@@ -47,7 +51,7 @@ const Login = () => {
   return (
     <div className="min-h-screen grid lg:grid-cols-2 font-inter">
       {/* Left Brand Panel */}
-      <div className="hidden lg:flex flex-col justify-between p-12 text-white bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+      <div className="hidden lg:flex flex-col justify-between p-12 text-white bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500">
         <div className="text-2xl font-bold tracking-wide">Offerly</div>
 
         <div>
@@ -158,7 +162,7 @@ const Login = () => {
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-xl font-semibold text-white 
-  bg-gradient-to-r from-indigo-500 to-pink-500 
+  bg-linear-to-r from-indigo-500 to-pink-500 
   hover:opacity-90 transition shadow-md disabled:opacity-60 cursor-pointer"
           >
             {loading ? "Signing in..." : "Sign in"}

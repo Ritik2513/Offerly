@@ -32,7 +32,7 @@ const AffiliateDashboard = () => {
 
   if (loading) {
     return (
-      <div className="space-y-6 animate-pulse">
+      <div className="space-y-6 animate-pulse font-inter">
         <div className="bg-white rounded-3xl border border-gray-200 p-8">
           <div className="h-8 w-64 bg-gray-200 rounded-xl"></div>
           <div className="h-4 w-80 bg-gray-100 rounded-lg mt-4"></div>
@@ -135,17 +135,14 @@ const AffiliateDashboard = () => {
               shadow-lg
             "
           >
-            <p className="text-sm text-indigo-100 font-medium">
-              Total Revenue
-            </p>
+            <p className="text-sm text-indigo-100 font-medium">Total Revenue</p>
 
             <h2 className="text-4xl font-bold text-white mt-2">
-              ${analytics?.totalRevenue || 0}
+              ₹{analytics?.totalPayout || 0}
             </h2>
 
             <div className="mt-4 flex items-center gap-2 text-sm text-green-200">
               <div className="w-2.5 h-2.5 rounded-full bg-green-300 animate-pulse" />
-
               Performance Updated
             </div>
           </div>

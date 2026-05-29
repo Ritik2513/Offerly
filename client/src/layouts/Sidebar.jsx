@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -10,11 +12,12 @@ import {
   BadgeDollarSign,
   Wallet,
 } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const { user } = useAuth();
-  const navItems = [
+
+  // ADMIN NAV ITEMS
+  const adminNavItems = [
     {
       name: "Dashboard",
       path: "/dashboard",
@@ -26,8 +29,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       icon: ShoppingBag,
     },
     {
-      name: "Affiliate",
-      path: "/create-affiliate",
+      name: "Affiliates",
+      path: "/create-affiliates",
       icon: Users,
     },
     {
@@ -45,22 +48,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       path: "/payouts",
       icon: Wallet,
     },
-    ...(user?.role === "affiliate"
-      ? [
-          {
-            name: "Affiliates",
-            path: "/affiliates",
-            icon: Users,
-          },
-        ]
-      : ""),
-
     {
       name: "Analytics",
       path: "/analytics",
       icon: BarChart3,
     },
   ];
+
+  // AFFILIATE NAV ITEMS
+  const affiliateNavItems = [
+    {
+      name: "Dashboard",
+      path: "/affiliate",
+      icon: LayoutDashboard,
+    },
+  ];
+
+  // ROLE BASED NAV
+  const navItems = user?.role === "admin" ? adminNavItems : affiliateNavItems;
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
@@ -82,7 +87,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     >
       {/* TOP */}
       <div className="h-16 border-b border-gray-200 px-5 flex items-center justify-between font-inter">
-        {/* BRAND */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-sm">
             <Box size={20} />
@@ -95,7 +99,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           </div>
         </div>
 
-        {/* CLOSE BUTTON */}
         <button
           onClick={() => setSidebarOpen(false)}
           className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
@@ -126,7 +129,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           );
         })}
       </nav>
-
       {/* BOTTOM */}
       <div className="p-4 border-t border-gray-200 font-inter">
         <div className="rounded-2xl bg-indigo-50 p-4">

@@ -131,7 +131,7 @@ export const getAffiliateAnalytics = async (req, res) => {
 
     // revenue
     const totalRevenue = conversions.reduce(
-      (acc, curr) => acc + curr.amount,
+      (acc, curr) => acc + curr.revenue,
       0,
     );
 

@@ -1,8 +1,8 @@
 import {
   MousePointerClick,
-  BadgeDollarSign,
   TrendingUp,
   Percent,
+  IndianRupee,
 } from "lucide-react";
 
 const stats = [
@@ -21,10 +21,10 @@ const stats = [
   },
 
   {
-    key: "totalRevenue",
-    label: "Revenue",
-    icon: BadgeDollarSign,
-    prefix: "$",
+    key: "totalPayout",
+    label: "Earnings",
+    icon: IndianRupee,
+    prefix: "₹",
     color: "bg-green-50 text-green-600",
   },
 
@@ -44,7 +44,7 @@ const AffiliateStats = ({ analytics }) => {
         grid grid-cols-1
         sm:grid-cols-2
         xl:grid-cols-4
-        gap-5
+        gap-5 font-inter
       "
     >
       {stats.map((item) => {

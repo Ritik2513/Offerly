@@ -69,7 +69,7 @@ const AffiliatePayoutTable = ({ payouts }) => {
               >
                 <td className="px-6 py-5">
                   <span className="font-bold text-green-600">
-                    ${item.amount}
+                    ₹{item.amount}
                   </span>
                 </td>
 
@@ -127,7 +127,7 @@ const AffiliatePayoutTable = ({ payouts }) => {
                 <p className="text-sm text-gray-500">Amount</p>
 
                 <h3 className="text-xl font-bold text-green-600 mt-1">
-                  ${item.amount}
+                  ₹{item.amount}
                 </h3>
               </div>
 
