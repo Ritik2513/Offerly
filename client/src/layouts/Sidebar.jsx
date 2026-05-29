@@ -8,6 +8,7 @@ import {
   Link2,
   Users,
   BadgeDollarSign,
+  Wallet,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -33,6 +34,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       name: "Conversions",
       path: "/conversions",
       icon: BadgeDollarSign,
+    },
+    {
+      name: "Payouts",
+      path: "/payouts",
+      icon: Wallet,
     },
     ...(user?.role === "admin"
       ? [

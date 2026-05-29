@@ -49,11 +49,38 @@ export const getPayout = async (req, res) => {
   try {
     const payouts = await Payout.find()
       .populate("affiliate", "name email")
-      .sort({ createdAt: -1 });
+      .sort({
+        createdAt: -1,
+      });
+
+    // analytics
+    const totalPaid = payouts.reduce(
+      (acc, curr) => (curr.status === "paid" ? acc + curr.amount : acc),
+      0,
+    );
+
+    const totalPending = payouts.reduce(
+      (acc, curr) => (curr.status === "pending" ? acc + curr.amount : acc),
+      0,
+    );
+
+    const totalPayouts = payouts.length;
+
+    const uniqueAffiliates = new Set(
+      payouts.map((p) => p.affiliate?._id.toString()),
+    ).size;
 
     res.status(200).json({
       success: true,
+
       payouts,
+
+      analytics: {
+        totalPaid,
+        totalPending,
+        totalPayouts,
+        uniqueAffiliates,
+      },
     });
   } catch (error) {
     res.status(500).json({
