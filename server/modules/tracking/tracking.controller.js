@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import TrackingLink from "./trackingLink.model.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { clickQueue } from "../../queues/click.queue.js";
+import logger from "../../config/logger.js";
 
 //Generate tracking link for affiliate
 export const generateTrackingLink = asyncHandler(async (req, res) => {
@@ -45,7 +46,7 @@ export const trackClick = async (req, res) => {
     //instant redirect
     return res.redirect(link.offer.landingPageUrl);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return res.status(500).send("Tracking Error");
   }
 };

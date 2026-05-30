@@ -3,6 +3,7 @@ import Conversion from "../conversions/conversion.model.js";
 import TrackingLink from "../tracking/trackingLink.model.js";
 import Offer from "../offer/offer.model.js";
 import Payout from "../payouts/payout.model.js";
+import logger from "../../config/logger.js";
 
 export const postbackConversion = async (req, res) => {
   try {
@@ -50,7 +51,7 @@ export const postbackConversion = async (req, res) => {
 
     res.send("OK");
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).send("Error");
   }
 };

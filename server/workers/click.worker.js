@@ -11,9 +11,10 @@ const UAParser = require("ua-parser-js");
 
 import Click from "../modules/tracking/click.model.js";
 import { incrementClickStats } from "../utils/analytics.helper.js";
+import logger from "../config/logger.js";
 
 await mongoose.connect(process.env.MONGO_URI);
-console.log("Worker MongoDB Connected");
+logger.info("Worker MongoDB Connected");
 
 //Worker listens to clickQueue
 const worker = new Worker(
@@ -22,7 +23,7 @@ const worker = new Worker(
     const { trackingLinkId, affiliate, offer, ip, userAgent, referer } =
       job.data;
 
-    console.log("Processing click job:", trackingLinkId);
+    logger.info("Processing click job:", trackingLinkId);
 
     // geo location
     const geo = geoip.lookup(ip);
@@ -50,7 +51,7 @@ const worker = new Worker(
       offer,
     });
 
-    console.log("Click saved to MongoDB", clickDoc);
+    logger.info("Click saved to MongoDB", clickDoc);
 
     await incrementClickStats(clickDoc);
   },
@@ -58,7 +59,7 @@ const worker = new Worker(
 );
 
 worker.on("completed", (job) => {
-  console.log("Job Completed:", job.id);
+  logger.info("Job Completed:", job.id);
 });
 
 worker.on("failed", (job, err) => {

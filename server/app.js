@@ -4,8 +4,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
-import morgan from "morgan";
-import { apiLimiter } from "./middleware/rateLimit.middleware.js";
+import morganMiddleware from "./config/morgan.js";
 import errorHandler from "./middleware/error.middleware.js";
 import router from "./routes/index.js";
 
@@ -18,15 +17,14 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
+app.use(helmet());
 app.use(cors(corsOptions));
 
-app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(morgan("dev"));
+app.use(morganMiddleware);
 
-app.use("/api", apiLimiter);
 app.use("/api", router);
 
 app.use(errorHandler);

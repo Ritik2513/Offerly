@@ -3,6 +3,7 @@ import TrackingLink from "../tracking/trackingLink.model.js";
 import Click from "../tracking/click.model.js";
 import Conversion from "../conversions/conversion.model.js";
 import Payout from "../payouts/payout.model.js";
+import logger from "../../config/logger.js";
 
 //get /api/analytics/today
 export const getTodayStats = async (req, res) => {
@@ -139,7 +140,7 @@ export const getAffiliateAnalytics = async (req, res) => {
     const totalPayout = conversions.reduce((acc, curr) => acc + curr.payout, 0);
 
     // conversion rate
-    const conversionRate =
+    const convesrsionRate =
       totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(2) : 0;
 
     // recent conversions
@@ -175,7 +176,7 @@ export const getAffiliateAnalytics = async (req, res) => {
       payouts,
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
 
     res.status(500).json({
       success: false,
