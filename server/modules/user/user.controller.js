@@ -47,13 +47,52 @@ export const getAffiliates = async (req, res) => {
 
 export const getAllAffiliates = async (req, res) => {
   try {
-    const users = await User.find({
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || "";
+    const status = req.query.status;
+    const skip = (page - 1) * limit;
+    const filter = {
       role: "affiliate",
-    }).sort({ createdAt: -1 });
+    };
+
+    if (search) {
+      filter.$or = [
+        {
+          name: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          email: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      ];
+    }
+
+    if (status !== undefined && status !== "") {
+      filter.isActive = status === "true";
+    }
+
+    const total = await User.countDocuments(filter);
+
+    const affiliates = await User.find(filter)
+      .select("-password")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
     res.status(200).json({
       success: true,
-      users,
+      data: affiliates,
+      pagination: {
+        page,
+        totalPages: Math.ceil(total / limit),
+        totalItems: total,
+      },
     });
   } catch (error) {
     res.status(500).json({

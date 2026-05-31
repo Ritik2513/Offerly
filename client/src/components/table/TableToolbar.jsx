@@ -6,6 +6,7 @@ const TableToolbar = ({
   status,
   setStatus,
   placeholder,
+  statusOptions,
 }) => {
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 mb-6 font-inter">
@@ -66,8 +67,11 @@ const TableToolbar = ({
             "
           >
             <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="paused">Paused</option>
+            {statusOptions.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>

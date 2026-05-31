@@ -25,7 +25,7 @@ const TrackingLinks = () => {
           API.get("/users/affiliates"),
         ]);
 
-        setOffers(offersRes.data || []);
+        setOffers(offersRes.data.data || []);
         setAffiliates(affiliatesRes.data.users || []);
       } catch (error) {
         console.log(error);

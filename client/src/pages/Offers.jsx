@@ -19,6 +19,7 @@ const Offers = () => {
     totalPages: 1,
     totalOffers: 0,
   });
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false); //create modal
   const [editModal, setEditModal] = useState(false); //edit modal
@@ -33,7 +34,7 @@ const Offers = () => {
         params: {
           page,
           limit: 10,
-          search,
+          search: debouncedSearch,
           status,
         },
       });
@@ -46,10 +47,18 @@ const Offers = () => {
     }
   };
 
+  //search after user type whole word
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search]);
+
   // Fetch Offer from DB
   useEffect(() => {
     fetchOffers();
-  }, [page, search, status]);
+  }, [page, debouncedSearch, status]);
 
   // Open Edit Modal
   const handleEdit = (offer) => {
@@ -95,6 +104,10 @@ const Offers = () => {
           setStatus(value);
         }}
         placeholder="Search Offers..."
+        statusOptions={[
+          { value: "active", label: "Active" },
+          { value: "paused", label: "paused" },
+        ]}
       />
 
       <OfferTable
@@ -110,8 +123,6 @@ const Offers = () => {
         totalItems={pagination.totalOffers}
         onPageChange={setPage}
       />
-
-      
 
       <Modal
         isOpen={openModal}
