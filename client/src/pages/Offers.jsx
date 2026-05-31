@@ -6,9 +6,19 @@ import Modal from "../components/ui/Modal";
 import CreateOfferForm from "../components/offers/CreateOfferForm";
 import EditOfferForm from "../components/offers/EditOfferForm";
 import DeleteOfferModal from "../components/offers/DeleteOfferModal";
+import TableToolbar from "../components/table/TableToolbar";
+import TablePagination from "../components/table/TablePagination";
 
 const Offers = () => {
   const [offers, setOffers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+    totalOffers: 0,
+  });
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false); //create modal
   const [editModal, setEditModal] = useState(false); //edit modal
@@ -16,21 +26,30 @@ const Offers = () => {
   const [selectedOffer, setSelectedOffer] = useState(null); //selected Offer
   const [deleteOffer, setDeleteOffer] = useState(null);
 
+  const fetchOffers = async () => {
+    try {
+      setLoading(true);
+      const { data } = await API.get("/offers", {
+        params: {
+          page,
+          limit: 10,
+          search,
+          status,
+        },
+      });
+      setOffers(data.data || []);
+      setPagination(data.pagination);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to load offers");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch Offer from DB
   useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        const { data } = await API.get("/offers");
-        setOffers(data || []);
-      } catch (error) {
-        toast.error(error.message);
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchOffers();
-  }, []);
+  }, [page, search, status]);
 
   // Open Edit Modal
   const handleEdit = (offer) => {
@@ -63,12 +82,37 @@ const Offers = () => {
           Create Offer
         </button>
       </div>
+
+      <TableToolbar
+        search={search}
+        setSearch={(value) => {
+          setPage(1);
+          setSearch(value);
+        }}
+        status={status}
+        setStatus={(value) => {
+          setPage(1);
+          setStatus(value);
+        }}
+        placeholder="Search Offers..."
+      />
+
       <OfferTable
         offers={offers}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+
+      <TablePagination
+        page={page}
+        totalPages={pagination.totalPages}
+        totalItems={pagination.totalOffers}
+        onPageChange={setPage}
+      />
+
+      
+
       <Modal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
@@ -76,7 +120,7 @@ const Offers = () => {
       >
         <CreateOfferForm
           onSuccess={(newOffer) => {
-            setOffers((prev) => [newOffer, ...(prev || [])]);
+            fetchOffers();
             setOpenModal(false);
           }}
         />
@@ -92,11 +136,7 @@ const Offers = () => {
           <EditOfferForm
             offer={selectedOffer}
             onSuccess={(updatedOffer) => {
-              setOffers((prev) =>
-                prev.map((item) =>
-                  item._id === updatedOffer._id ? updatedOffer : item,
-                ),
-              );
+              fetchOffers();
 
               setEditModal(false);
             }}
@@ -114,7 +154,7 @@ const Offers = () => {
             offer={deleteOffer}
             onClose={() => setDeleteModal(false)}
             onSuccess={(id) => {
-              setOffers((prev) => prev.filter((item) => item._id !== id));
+              fetchOffers();
 
               setDeleteModal(false);
             }}

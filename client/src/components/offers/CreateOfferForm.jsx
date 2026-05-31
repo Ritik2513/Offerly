@@ -153,7 +153,6 @@ const CreateOfferForm = ({ onSuccess }) => {
           >
             <option value="active">Active</option>
             <option value="paused">Paused</option>
-            <option value="inactive">Inactive</option>
           </select>
         </div>
       </div>
