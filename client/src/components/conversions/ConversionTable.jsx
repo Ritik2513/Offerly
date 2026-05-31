@@ -1,26 +1,19 @@
 import ConversionStatusBadge from "./ConversionStatusBadge";
 import { DollarSign, CalendarDays, IndianRupee } from "lucide-react";
+import TableLoader from "../table/TableLoader";
+import TableEmptyState from "../table/TableEmptyState";
 
 const ConversionTable = ({ conversions, loading }) => {
   if (loading) {
-    return (
-      <div className="bg-white rounded-3xl border border-gray-200 p-10 shadow-sm">
-        <p className="text-gray-500 text-sm">Loading conversions...</p>
-      </div>
-    );
+    return <TableLoader rows={5} cols={8} />;
   }
 
   if (!conversions?.length) {
     return (
-      <div className="bg-white rounded-3xl border border-gray-200 p-10 text-center shadow-sm">
-        <h3 className="text-lg font-semibold text-gray-900">
-          No conversions found
-        </h3>
-
-        <p className="text-sm text-gray-500 mt-2">
-          Conversion records will appear here.
-        </p>
-      </div>
+      <TableEmptyState
+        title="No conversions found"
+        description="Conversion records will appear here."
+      />
     );
   }
 

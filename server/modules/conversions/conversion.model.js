@@ -30,11 +30,6 @@ const conversionSchema = new mongoose.Schema(
       index: true,
     },
 
-    // amount: {
-    //   type: Number,
-    //   required: true,
-    // },
-
     revenue: {
       type: Number,
       required: true,

@@ -8,6 +8,7 @@ import EditOfferForm from "../components/offers/EditOfferForm";
 import DeleteOfferModal from "../components/offers/DeleteOfferModal";
 import TableToolbar from "../components/table/TableToolbar";
 import TablePagination from "../components/table/TablePagination";
+import Header from "../components/ui/Header";
 
 const Offers = () => {
   const [offers, setOffers] = useState([]);
@@ -74,23 +75,12 @@ const Offers = () => {
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 font-inter">
-        <div>
-          <h1 className="text-[32px] sm:text-[24px] leading-tight font-semibold tracking-tight text-[#071437]">
-            Offers
-          </h1>
-          <p className="text-[#5E6278] mt-1 text-sm sm:text-sm">
-            Manage campaigns available to your affiliate network.
-          </p>
-        </div>
-
-        <button
-          onClick={() => setOpenModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-medium transition cursor-pointer"
-        >
-          Create Offer
-        </button>
-      </div>
+      <Header
+        title="Offers"
+        description="Manage campaigns available to your Offer."
+        buttonText="Create Offer"
+        onButtonClick={() => setOpenModal(true)}
+      />
 
       <TableToolbar
         search={search}

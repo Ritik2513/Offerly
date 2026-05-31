@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import API from "../api/axios";
 import { toast } from "sonner";
+import API from "../api/axios";
 import AffiliateTable from "../components/affiliates/AffiliateTable";
 import Modal from "../components/ui/Modal";
 import AffiliateForm from "../components/affiliates/AffiliateForm";
 import TableToolbar from "../components/table/TableToolbar";
 import TablePagination from "../components/table/TablePagination";
+import Header from "../components/ui/Header";
 
 const Affiliates = () => {
   const [affiliates, setAffiliates] = useState([]);
@@ -34,6 +35,7 @@ const Affiliates = () => {
 
   const fetchAffiliates = async () => {
     try {
+      setLoading(true);
       const { data } = await API.get("/users", {
         params: {
           page,
@@ -71,24 +73,12 @@ const Affiliates = () => {
   return (
     <div className="space-y-6">
       {/* HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-2xl font-bold tracking-tight text-[#071437]">
-            Affiliate Management
-          </h1>
-
-          <p className="text-sm text-[#5E6278] mt-2">
-            Manage affiliate access and account status.
-          </p>
-        </div>
-
-        <button
-          onClick={() => setOpenModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-medium transition cursor-pointer"
-        >
-          Create Affiliate
-        </button>
-      </div>
+      <Header
+        title="Affiliate Management"
+        description="Manage affiliate access and account status."
+        buttonText="Create Affiliate"
+        onButtonClick={() => setOpenModal(true)}
+      />
 
       <TableToolbar
         search={search}

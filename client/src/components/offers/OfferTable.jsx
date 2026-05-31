@@ -1,21 +1,19 @@
-import OfferStatusBadge from "./OfferStatusBadge";
 import { Pencil, Trash2 } from "lucide-react";
+import OfferStatusBadge from "./OfferStatusBadge";
+import TableLoader from "../table/TableLoader";
+import TableEmptyState from "../table/TableEmptyState";
 
 const OfferTable = ({ offers, loading, onEdit, onDelete }) => {
   if (loading) {
-    return (
-      <div className="bg-white rounded-2xl p-10 border border-gray-200">
-        <p className="text-gray-500">Loading offers...</p>
-      </div>
-    );
+    return <TableLoader rows={5} cols={8} />;
   }
 
   if (!offers.length) {
     return (
-      <div className="bg-white rounded-2xl p-10 border border-gray-200 text-center">
-        <h3 className="text-lg font-semibold mb-2">No offers found</h3>
-        <p className="text-gray-500">Create your first affiliate offer</p>
-      </div>
+      <TableEmptyState
+        title="No offers found"
+        description="Create your first offer to start tracking."
+      />
     );
   }
 

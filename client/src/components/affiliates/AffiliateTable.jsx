@@ -1,27 +1,17 @@
+import TableLoader from "../table/TableLoader";
+import TableEmptyState from "../table/TableEmptyState";
+
 const AffiliateTable = ({ affiliates, loading, onToggleStatus }) => {
   if (loading) {
-    return (
-      <div className="bg-white rounded-3xl border border-gray-200 p-10 shadow-sm">
-        <div className="flex items-center justify-center">
-          <p className="text-gray-500 text-sm animate-pulse">
-            Loading affiliates...
-          </p>
-        </div>
-      </div>
-    );
+    return <TableLoader rows={5} cols={5} />;
   }
 
   if (!affiliates?.length) {
     return (
-      <div className="bg-white rounded-3xl border border-gray-200 p-10 shadow-sm text-center">
-        <h3 className="text-lg font-semibold text-gray-900">
-          No Affiliates Found
-        </h3>
-
-        <p className="text-gray-500 text-sm mt-2">
-          Create your first affiliate account to start tracking campaigns.
-        </p>
-      </div>
+      <TableEmptyState
+        title="No affiliates found"
+        description="Invite affiliates to start growing your network."
+      />
     );
   }
 

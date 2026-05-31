@@ -1,6 +1,8 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const TablePagination = ({ page, totalPages, totalItems, onPageChange }) => {
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
   return (
     <div className="mt-6 bg-white border border-gray-200 rounded-2xl p-4">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -19,37 +21,23 @@ const TablePagination = ({ page, totalPages, totalItems, onPageChange }) => {
           <button
             disabled={page === 1}
             onClick={() => onPageChange(page - 1)}
-            className="
-              flex items-center gap-2
-              px-4 py-2
-              rounded-xl
-              border border-gray-200
-              bg-white
-              text-sm font-medium
-              hover:bg-gray-50
-              disabled:opacity-50
-              disabled:cursor-not-allowed
-              transition
-            "
+            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-sm font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             <ChevronLeft size={16} />
             Prev
           </button>
 
-          <div
-            className="
-              min-w-15
-              text-center
-              px-4 py-2
-              rounded-xl
-              bg-indigo-50
-              text-indigo-700
-              font-semibold
-              text-sm
-            "
-          >
-            {page}
-          </div>
+          {pages.map((item) => (
+            <button
+              key={item}
+              onClick={() => onPageChange(item)}
+              className={`px-4 py-2 rounded-xl border border-gray-200 min-w-15 text-center text-sm ${
+                page === item ? "bg-indigo-50 text-indigo-700" : "bg-white"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
 
           <button
             disabled={page === totalPages || totalPages === 0}

@@ -1,35 +1,18 @@
 import { CheckCircle2, Clock3, IndianRupee, Mail, User2 } from "lucide-react";
+import TableLoader from "../table/TableLoader";
+import TableEmptyState from "../table/TableEmptyState";
 
 const PayoutTable = ({ payouts, loading, onMarkPaid }) => {
   if (loading) {
-    return (
-      <div className="bg-white border border-gray-200 rounded-3xl p-10 shadow-sm">
-        <div className="flex items-center justify-center">
-          <div className="flex items-center gap-3 text-gray-500">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-
-            <span className="text-sm font-medium">Loading payouts...</span>
-          </div>
-        </div>
-      </div>
-    );
+    return <TableLoader rows={5} cols={8} />;
   }
 
   if (!payouts?.length) {
     return (
-      <div className="bg-white border border-gray-200 rounded-3xl p-12 text-center shadow-sm">
-        <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto">
-          <IndianRupee size={28} className="text-gray-500" />
-        </div>
-
-        <h3 className="text-lg font-semibold text-gray-900 mt-5">
-          No payouts found
-        </h3>
-
-        <p className="text-sm text-gray-500 mt-2">
-          Payout records will appear here once generated.
-        </p>
-      </div>
+      <TableEmptyState
+        title="No payouts found"
+        description="Payout records will appear here once generated."
+      />
     );
   }
 

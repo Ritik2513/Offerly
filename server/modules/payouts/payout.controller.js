@@ -47,33 +47,171 @@ export const createPayout = async (req, res) => {
 
 export const getPayout = async (req, res) => {
   try {
-    const payouts = await Payout.find()
-      .populate("affiliate", "name email")
-      .sort({
-        createdAt: -1,
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const search = req.query.search?.trim() || "";
+    const status = req.query.status || "";
+
+    const skip = (page - 1) * limit;
+
+    const pipeline = [
+      {
+        $lookup: {
+          from: "users",
+          localField: "affiliate",
+          foreignField: "_id",
+          as: "affiliate",
+        },
+      },
+      {
+        $unwind: "$affiliate",
+      },
+    ];
+
+    const matchStage = {};
+
+    // Status Filter
+    if (status) {
+      matchStage.status = status;
+    }
+
+    // Search Filter
+    if (search) {
+      matchStage.$or = [
+        {
+          "affiliate.name": {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          "affiliate.email": {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      ];
+    }
+
+    if (Object.keys(matchStage).length > 0) {
+      pipeline.push({
+        $match: matchStage,
       });
+    }
 
-    // analytics
-    const totalPaid = payouts.reduce(
-      (acc, curr) => (curr.status === "paid" ? acc + curr.amount : acc),
-      0,
-    );
+    // Total Records
+    const totalResult = await Payout.aggregate([
+      ...pipeline,
+      {
+        $count: "total",
+      },
+    ]);
 
-    const totalPending = payouts.reduce(
-      (acc, curr) => (curr.status === "pending" ? acc + curr.amount : acc),
-      0,
-    );
+    const totalItems = totalResult[0]?.total || 0;
 
-    const totalPayouts = payouts.length;
+    // Paginated Data
+    const payouts = await Payout.aggregate([
+      ...pipeline,
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
+      },
+    ]);
 
-    const uniqueAffiliates = new Set(
-      payouts.map((p) => p.affiliate?._id.toString()),
-    ).size;
+    // Analytics
+    const analyticsResult = await Payout.aggregate([
+      ...(Object.keys(matchStage).length > 0
+        ? [
+            {
+              $lookup: {
+                from: "users",
+                localField: "affiliate",
+                foreignField: "_id",
+                as: "affiliate",
+              },
+            },
+            {
+              $unwind: "$affiliate",
+            },
+            {
+              $match: matchStage,
+            },
+          ]
+        : []),
+
+      {
+        $group: {
+          _id: "$status",
+          count: {
+            $sum: 1,
+          },
+          amount: {
+            $sum: "$amount",
+          },
+        },
+      },
+    ]);
+
+    let totalPaid = 0;
+    let totalPending = 0;
+    let totalPayouts = 0;
+
+    analyticsResult.forEach((item) => {
+      totalPayouts += item.count;
+
+      if (item._id === "paid") {
+        totalPaid = item.amount;
+      }
+
+      if (item._id === "pending") {
+        totalPending = item.amount;
+      }
+    });
+
+    const uniqueAffiliatesResult = await Payout.aggregate([
+      ...(Object.keys(matchStage).length > 0
+        ? [
+            {
+              $lookup: {
+                from: "users",
+                localField: "affiliate",
+                foreignField: "_id",
+                as: "affiliate",
+              },
+            },
+            {
+              $unwind: "$affiliate",
+            },
+            {
+              $match: matchStage,
+            },
+          ]
+        : []),
+
+      {
+        $group: {
+          _id: "$affiliate",
+        },
+      },
+      {
+        $count: "count",
+      },
+    ]);
+
+    const uniqueAffiliates = uniqueAffiliatesResult[0]?.count || 0;
 
     res.status(200).json({
       success: true,
 
-      payouts,
+      data: payouts,
 
       analytics: {
         totalPaid,
@@ -81,8 +219,16 @@ export const getPayout = async (req, res) => {
         totalPayouts,
         uniqueAffiliates,
       },
+
+      pagination: {
+        page,
+        totalPages: Math.ceil(totalItems / limit),
+        totalItems,
+      },
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: "Failed to fetch payouts",
