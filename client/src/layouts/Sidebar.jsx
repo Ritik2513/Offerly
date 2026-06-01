@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import {
   LayoutDashboard,
   ShoppingBag,
-  BarChart3,
   Box,
   X,
   Link2,
@@ -47,11 +46,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       name: "Payouts",
       path: "/payouts",
       icon: Wallet,
-    },
-    {
-      name: "Analytics",
-      path: "/analytics",
-      icon: BarChart3,
     },
   ];
 

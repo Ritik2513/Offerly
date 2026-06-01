@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import API from "../api/axios";
 import { toast } from "sonner";
+import { Download } from "lucide-react";
 import ConversionTable from "../components/conversions/ConversionTable";
 import ConversionStats from "../components/conversions/ConversionStats";
 import Header from "../components/ui/Header";
 import TableToolbar from "../components/table/TableToolbar";
 import TablePagination from "../components/table/TablePagination";
+import useExport from "../hooks/useExport"; //custom hook
 
 const Conversions = () => {
   const [conversions, setConversions] = useState([]);
@@ -21,6 +23,10 @@ const Conversions = () => {
   });
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
+  // Custom hook to download csv file
+  const { exportFile } = useExport();
+
+  // Fetch conversions
   const fetchConversions = async () => {
     try {
       setLoading(true);
@@ -51,9 +57,14 @@ const Conversions = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
+  // fetch data with certain conditions
   useEffect(() => {
     fetchConversions();
   }, [page, debouncedSearch, status]);
+
+  const handleExportConversions = () => {
+    exportFile("/conversions/export", "conversions.csv");
+  };
 
   return (
     <div className="space-y-6 font-inter">
@@ -61,6 +72,14 @@ const Conversions = () => {
       <Header
         title="Conversions"
         description="Review, manage, and monitor affiliate conversion activity."
+        actions={[
+          {
+            label: "Export CSV",
+            icon: <Download size={18} />,
+            variant: "secondary",
+            onClick: handleExportConversions,
+          },
+        ]}
       />
 
       {/* STATS */}

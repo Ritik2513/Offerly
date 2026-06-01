@@ -1,4 +1,5 @@
 import Conversion from "./conversion.model.js";
+import { exportCSV } from "../../utils/csvExport.js";
 
 export const getConversions = async (req, res) => {
   try {
@@ -151,6 +152,35 @@ export const getConversions = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch conversions",
+    });
+  }
+};
+
+export const exportConversions = async (req, res) => {
+  try {
+    const conversions = await Conversion.find()
+      .populate("affiliate", "name")
+      .populate("offer", "title")
+      .lean();
+
+    const data = conversions.map((item) => ({
+      affiliate: item.affiliate?.name,
+      offer: item.offer?.title,
+      revenue: item.revenue,
+      payout: item.payout,
+      status: item.status,
+      date: item.createdAt.toLocaleDateString("en-IN"),
+    }));
+
+    return exportCSV(
+      res,
+      data,
+      ["affiliate", "offer", "revenue", "payout", "status", "date"],
+      "conversions",
+    );
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to export conversions",
     });
   }
 };

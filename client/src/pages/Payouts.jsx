@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 import { toast } from "sonner";
+import { Download } from "lucide-react";
 import PayoutStats from "../components/payouts/PayoutStats";
 import PayoutTable from "../components/payouts/PayoutTable";
 import Header from "../components/ui/Header";
 import TableToolbar from "../components/table/TableToolbar";
 import TablePagination from "../components/table/TablePagination";
+import useExport from "../hooks/useExport"; //custom hook
 
 const Payouts = () => {
   const [payouts, setPayout] = useState([]);
@@ -21,6 +23,10 @@ const Payouts = () => {
   });
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
+  // custom hook to download csv
+  const { exportFile } = useExport();
+
+  // Fetch Payout
   const fetchPayouts = async () => {
     try {
       setLoading(true);
@@ -42,6 +48,7 @@ const Payouts = () => {
     }
   };
 
+  //search after user type whole word
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -49,10 +56,12 @@ const Payouts = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
+  // fetch data with certain conditions
   useEffect(() => {
     fetchPayouts();
   }, [page, debouncedSearch, status]);
 
+  // status
   const handleMarkPaid = async (id) => {
     try {
       const { data } = await API.patch(`/payouts/${id}/pay`);
@@ -66,6 +75,10 @@ const Payouts = () => {
     }
   };
 
+  const handleExportPayouts = () => {
+    exportFile("/payouts/export", "payout.csv");
+  };
+
   return (
     <>
       <div className="space-y-6 font-inter">
@@ -73,6 +86,14 @@ const Payouts = () => {
         <Header
           title="Payouts"
           description="Pending balances and payment history."
+          actions={[
+            {
+              label: "Export CSV",
+              icon: <Download size={18} />,
+              variant: "secondary",
+              onClick: handleExportPayouts,
+            },
+          ]}
         />
 
         {/* STATS */}

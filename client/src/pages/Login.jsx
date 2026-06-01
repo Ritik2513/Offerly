@@ -78,7 +78,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-        <div className="opacity-70 text-sm">© 2025 Offerly</div>
+        <div className="opacity-70 text-sm">© 2026 Offerly</div>
       </div>
 
       {/* Right Form Panel */}
@@ -92,7 +92,7 @@ const Login = () => {
           </p>
 
           {/* Social Login */}
-          <div className="flex gap-4 mb-6">
+          {/* <div className="flex gap-4 mb-6">
             <button
               type="button"
               className="flex-1 flex items-center justify-center gap-2 border border-gray-300 rounded-xl py-3 font-medium hover:bg-gray-50 transition cursor-pointer"
@@ -103,16 +103,16 @@ const Login = () => {
               />
               Google
             </button>
-          </div>
+          </div> */}
 
           {/* Divider */}
-          <div className="flex items-center gap-4 my-6">
+          {/* <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-px bg-gray-200" />
             <span className="text-xs text-gray-400 font-medium tracking-wider">
               OR WITH EMAIL
             </span>
             <div className="flex-1 h-px bg-gray-200" />
-          </div>
+          </div> */}
 
           {/* EMAIL */}
           <div className="mb-4">
@@ -133,12 +133,12 @@ const Login = () => {
               <label className="text-sm font-medium text-gray-700">
                 Password
               </label>
-              <button
+              {/* <button
                 type="button"
                 className="text-sm text-indigo-600 hover:underline"
               >
                 Forgot password?
-              </button>
+              </button> */}
             </div>
 
             <input
@@ -152,24 +152,24 @@ const Login = () => {
           </div>
 
           {/* Remember me */}
-          <div className="flex items-center gap-2 my-4">
+          {/* <div className="flex items-center gap-2 my-4">
             <input type="checkbox" className="accent-indigo-600 w-4 h-4" />
             <span className="text-sm text-gray-600">Keep me signed in</span>
-          </div>
+          </div> */}
 
           {/* SIGN IN BUTTON */}
           <button
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-xl font-semibold text-white 
-  bg-linear-to-r from-indigo-500 to-pink-500 
+  bg-linear-to-r from-indigo-500 to-pink-500 mt-2
   hover:opacity-90 transition shadow-md disabled:opacity-60 cursor-pointer"
           >
             {loading ? "Signing in..." : "Sign in"}
           </button>
 
           {/* SIGN UP */}
-          <p className="text-center text-sm text-gray-500 mt-6">
+          {/* <p className="text-center text-sm text-gray-500 mt-6">
             Don't have an account?{" "}
             <Link
               to="/register"
@@ -177,7 +177,7 @@ const Login = () => {
             >
               Create one
             </Link>
-          </p>
+          </p> */}
         </form>
       </div>
     </div>

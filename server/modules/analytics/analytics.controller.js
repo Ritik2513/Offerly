@@ -60,7 +60,7 @@ export const getOfferStats = async (req, res) => {
 };
 
 //Get /api/analytics/affiliates
-export const getAffiliateStats = async (req, res) => {
+export const getAdminAnalytics = async (req, res) => {
   try {
     const keys = await redisQueueConnection.keys("stats:affiliate:*");
     const result = {};
@@ -140,7 +140,7 @@ export const getAffiliateAnalytics = async (req, res) => {
     const totalPayout = conversions.reduce((acc, curr) => acc + curr.payout, 0);
 
     // conversion rate
-    const convesrsionRate =
+    const conversionRate =
       totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(2) : 0;
 
     // recent conversions

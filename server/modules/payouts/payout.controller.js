@@ -1,5 +1,6 @@
 import Conversion from "../conversions/conversion.model.js";
 import Payout from "./payout.model.js";
+import { exportCSV } from "../../utils/csvExport.js";
 
 export const createPayout = async (req, res) => {
   try {
@@ -270,6 +271,33 @@ export const markPayoutPaid = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to update payout",
+    });
+  }
+};
+
+export const exportPayouts = async (req, res) => {
+  try {
+    const payouts = await Payout.find()
+      .populate("affiliate", "name email")
+      .lean();
+
+    const data = payouts.map((item) => ({
+      affiliate: item.affiliate?.name,
+      email: item.affiliate?.email,
+      amount: item.amount,
+      status: item.status,
+      date: item.createdAt.toLocaleDateString("en-IN"),
+    }));
+
+    return exportCSV(
+      res,
+      data,
+      ["affiliate", "email", "amount", "status", "date"],
+      "payouts",
+    );
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to export payouts",
     });
   }
 };

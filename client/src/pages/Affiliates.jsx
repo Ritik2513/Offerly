@@ -1,5 +1,7 @@
+import { Download, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import useExport from "../hooks/useExport";
 import API from "../api/axios";
 import AffiliateTable from "../components/affiliates/AffiliateTable";
 import Modal from "../components/ui/Modal";
@@ -21,6 +23,9 @@ const Affiliates = () => {
     totalAffiliates: 0,
   });
   const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // custom hook to download csv
+  const { exportFile } = useExport();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -70,14 +75,29 @@ const Affiliates = () => {
     }
   };
 
+  const handleExportAffiliates = () => {
+    exportFile("/users/export", "affiliates.csv");
+  };
+
   return (
     <div className="space-y-6">
       {/* HEADER */}
       <Header
-        title="Affiliate Management"
-        description="Manage affiliate access and account status."
-        buttonText="Create Affiliate"
-        onButtonClick={() => setOpenModal(true)}
+        title="Affiliates"
+        description="Manage affiliate accounts."
+        actions={[
+          {
+            label: "Export",
+            icon: <Download size={18} />,
+            variant: "secondary",
+            onClick: handleExportAffiliates,
+          },
+          {
+            label: "Create Affiliate",
+            icon: <Plus size={18} />,
+            onClick: () => setOpenModal(true),
+          },
+        ]}
       />
 
       <TableToolbar

@@ -1,7 +1,8 @@
+import { Download, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import API from "../api/axios";
 import OfferTable from "../components/offers/OfferTable";
-import { toast } from "sonner";
 import Modal from "../components/ui/Modal";
 import CreateOfferForm from "../components/offers/CreateOfferForm";
 import EditOfferForm from "../components/offers/EditOfferForm";
@@ -9,6 +10,7 @@ import DeleteOfferModal from "../components/offers/DeleteOfferModal";
 import TableToolbar from "../components/table/TableToolbar";
 import TablePagination from "../components/table/TablePagination";
 import Header from "../components/ui/Header";
+import useExport from "../hooks/useExport";
 
 const Offers = () => {
   const [offers, setOffers] = useState([]);
@@ -28,6 +30,10 @@ const Offers = () => {
   const [selectedOffer, setSelectedOffer] = useState(null); //selected Offer
   const [deleteOffer, setDeleteOffer] = useState(null);
 
+  // custom hook to download csv file
+  const { exportFile } = useExport();
+
+  // Fetch Offers
   const fetchOffers = async () => {
     try {
       setLoading(true);
@@ -56,7 +62,7 @@ const Offers = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Fetch Offer from DB
+  // Fetch Offer under certain condition
   useEffect(() => {
     fetchOffers();
   }, [page, debouncedSearch, status]);
@@ -73,95 +79,112 @@ const Offers = () => {
     setDeleteModal(true);
   };
 
+  const handleExportOffers = () => {
+    exportFile("/offers/export", "offers.csv");
+  };
+
   return (
     <>
-      <Header
-        title="Offers"
-        description="Manage campaigns available to your Offer."
-        buttonText="Create Offer"
-        onButtonClick={() => setOpenModal(true)}
-      />
-
-      <TableToolbar
-        search={search}
-        setSearch={(value) => {
-          setPage(1);
-          setSearch(value);
-        }}
-        status={status}
-        setStatus={(value) => {
-          setPage(1);
-          setStatus(value);
-        }}
-        placeholder="Search Offers..."
-        statusOptions={[
-          { value: "active", label: "Active" },
-          { value: "paused", label: "paused" },
-        ]}
-      />
-
-      <OfferTable
-        offers={offers}
-        loading={loading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
-
-      <TablePagination
-        page={page}
-        totalPages={pagination.totalPages}
-        totalItems={pagination.totalOffers}
-        onPageChange={setPage}
-      />
-
-      <Modal
-        isOpen={openModal}
-        onClose={() => setOpenModal(false)}
-        title="Create New Offer"
-      >
-        <CreateOfferForm
-          onSuccess={(newOffer) => {
-            fetchOffers();
-            setOpenModal(false);
-          }}
+      <div className="space-y-6">
+        <Header
+          title="Offers"
+          description="Manage all affiliate offers."
+          actions={[
+            {
+              label: "Export",
+              icon: <Download size={18} />,
+              variant: "secondary",
+              onClick: handleExportOffers,
+            },
+            {
+              label: "Create Offer",
+              icon: <Plus size={18} />,
+              onClick: () => setOpenModal(true),
+            },
+          ]}
         />
-      </Modal>
 
-      {/* EDIT Modal */}
-      {selectedOffer && (
+        <TableToolbar
+          search={search}
+          setSearch={(value) => {
+            setPage(1);
+            setSearch(value);
+          }}
+          status={status}
+          setStatus={(value) => {
+            setPage(1);
+            setStatus(value);
+          }}
+          placeholder="Search Offers..."
+          statusOptions={[
+            { value: "active", label: "Active" },
+            { value: "paused", label: "paused" },
+          ]}
+        />
+
+        <OfferTable
+          offers={offers}
+          loading={loading}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+
+        <TablePagination
+          page={page}
+          totalPages={pagination.totalPages}
+          totalItems={pagination.totalOffers}
+          onPageChange={setPage}
+        />
+
         <Modal
-          isOpen={editModal}
-          onClose={() => setEditModal(false)}
-          title="Edit Offer"
+          isOpen={openModal}
+          onClose={() => setOpenModal(false)}
+          title="Create New Offer"
         >
-          <EditOfferForm
-            offer={selectedOffer}
-            onSuccess={(updatedOffer) => {
+          <CreateOfferForm
+            onSuccess={(newOffer) => {
               fetchOffers();
-
-              setEditModal(false);
+              setOpenModal(false);
             }}
           />
         </Modal>
-      )}
 
-      {deleteOffer && (
-        <Modal
-          isOpen={deleteModal}
-          onClose={() => setDeleteModal(false)}
-          title="Delete Offer"
-        >
-          <DeleteOfferModal
-            offer={deleteOffer}
+        {/* EDIT Modal */}
+        {selectedOffer && (
+          <Modal
+            isOpen={editModal}
+            onClose={() => setEditModal(false)}
+            title="Edit Offer"
+          >
+            <EditOfferForm
+              offer={selectedOffer}
+              onSuccess={(updatedOffer) => {
+                fetchOffers();
+
+                setEditModal(false);
+              }}
+            />
+          </Modal>
+        )}
+
+        {deleteOffer && (
+          <Modal
+            isOpen={deleteModal}
             onClose={() => setDeleteModal(false)}
-            onSuccess={(id) => {
-              fetchOffers();
+            title="Delete Offer"
+          >
+            <DeleteOfferModal
+              offer={deleteOffer}
+              onClose={() => setDeleteModal(false)}
+              onSuccess={(id) => {
+                fetchOffers();
 
-              setDeleteModal(false);
-            }}
-          />
-        </Modal>
-      )}
+                setDeleteModal(false);
+              }}
+            />
+          </Modal>
+        )}
+      </div>
     </>
   );
 };

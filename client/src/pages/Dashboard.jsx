@@ -72,8 +72,7 @@ const Dashboard = () => {
         </div>
 
         {/* RIGHT */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-          {/* FILTERS */}
+        {/* <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="bg-[#EEF2F9] p-1 rounded-2xl flex items-center justify-between sm:justify-start overflow-x-auto ">
             {["24h", "7d", "30d", "90d"].map((item) => (
               <button
@@ -89,18 +88,16 @@ const Dashboard = () => {
             ))}
           </div>
 
-          {/* CUSTOM */}
           <button className="flex items-center justify-center gap-2 px-5 py-2 rounded-lg border border-[#E5E7EB] bg-white hover:bg-gray-50 transition">
             <Calendar size={18} />
             <span className="text-xs font-medium">Custom</span>
           </button>
 
-          {/* EXPORT */}
           <button className="flex items-center justify-center gap-2 px-5 py-2 rounded-lg bg-linear-to-r from-[#7C5CFC] to-[#D15BFF] text-white shadow-md hover:opacity-90 transition">
             <Download size={18} />
             <span className="text-sm font-medium">Export</span>
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* KPI GRID */}

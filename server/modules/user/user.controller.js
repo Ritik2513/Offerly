@@ -1,4 +1,5 @@
 import User from "./user.model.js";
+import { exportCSV } from "../../utils/csvExport.js";
 
 export const createAffiliate = async (req, res) => {
   try {
@@ -121,5 +122,27 @@ export const toggleAffiliateStatus = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Failed to update affiliate" });
+  }
+};
+
+export const exportAffiliate = async (req, res) => {
+  try {
+    const affiliates = await User.find({ role: "affiliate" }).lean();
+
+    const data = affiliates.map((affiliate) => ({
+      name: affiliate.name,
+      email: affiliate.email,
+      status: affiliate.isActive ? "Active" : "Inactive",
+      joined: affiliate.createdAt.toLocaleDateString("en-IN"),
+    }));
+
+    return exportCSV(
+      res,
+      data,
+      ["name", "email", "status", "joined"],
+      "affiliates",
+    );
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to export affiliates" });
   }
 };

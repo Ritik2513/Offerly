@@ -3,7 +3,6 @@ import { Toaster } from "sonner";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Offers from "./pages/Offers";
-import Analytics from "./pages/Analytics";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import TrackingLinks from "./pages/TrackingLinks";
@@ -24,21 +23,19 @@ const App = () => {
           <Route element={<RoleRoute allowedRoles={["admin"]} />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/offers" element={<Offers/>}/>
-              <Route path="/create-affiliates" element={<Affiliates/>}/>
-              <Route path="/tracking-links" element={<TrackingLinks/>}/>
-              <Route path="/conversions" element={<Conversions/>}/>
-              <Route path="/payouts" element={<Payouts/>}/>
-              <Route path="/analytics" element={<Analytics/>}/>
+              <Route path="/offers" element={<Offers />} />
+              <Route path="/create-affiliates" element={<Affiliates />} />
+              <Route path="/tracking-links" element={<TrackingLinks />} />
+              <Route path="/conversions" element={<Conversions />} />
+              <Route path="/payouts" element={<Payouts />} />
             </Route>
           </Route>
 
           {/* Affiliate Routes */}
           <Route element={<RoleRoute allowedRoles={["affiliate"]} />}>
-          <Route element={<DashboardLayout/>}>
-          <Route path="/affiliate" element={<AffiliateDashboard/>}/>
-
-          </Route>
+            <Route element={<DashboardLayout />}>
+              <Route path="/affiliate" element={<AffiliateDashboard />} />
+            </Route>
           </Route>
         </Route>
       </Routes>
