@@ -34,6 +34,17 @@ export const getConversions = async (req, res) => {
       {
         $unwind: "$offer",
       },
+      {
+        $lookup: {
+          from: "clicks",
+          localField: "click",
+          foreignField: "_id",
+          as: "click",
+        },
+      },
+      {
+        $unwind: "$click",
+      },
     ];
 
     const matchStage = {};

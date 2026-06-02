@@ -10,6 +10,7 @@ import {
   Users,
   BadgeDollarSign,
   Wallet,
+  MousePointerClick,
 } from "lucide-react";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -36,6 +37,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       name: "Tracking Links",
       path: "/tracking-links",
       icon: Link2,
+    },
+    {
+      name: "Clicks",
+      path: "/clicks",
+      icon: MousePointerClick,
     },
     {
       name: "Conversions",

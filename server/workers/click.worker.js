@@ -4,7 +4,6 @@ import { Worker } from "bullmq";
 import redisConnection from "../config/redisQueue.js";
 import mongoose from "mongoose";
 import geoip from "geoip-lite";
-import { nanoid } from "nanoid";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const UAParser = require("ua-parser-js");
@@ -20,8 +19,15 @@ logger.info("Worker MongoDB Connected");
 const worker = new Worker(
   "clickQueue",
   async (job) => {
-    const { trackingLinkId, affiliate, offer, ip, userAgent, referer } =
-      job.data;
+    const {
+      clickId,
+      trackingLinkId,
+      affiliate,
+      offer,
+      ip,
+      userAgent,
+      referer,
+    } = job.data;
 
     logger.info("Processing click job:", trackingLinkId);
 
@@ -38,8 +44,8 @@ const worker = new Worker(
     const os = parser.getOS().name || "Unknown";
 
     const clickDoc = await Click.create({
+      clickId,
       trackingLink: trackingLinkId,
-      clickId: nanoid(12), //Generate public click id
       ip,
       country,
       city,

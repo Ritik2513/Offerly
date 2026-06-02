@@ -1,32 +1,24 @@
-import ConversionStatusBadge from "./ConversionStatusBadge";
-import { DollarSign, CalendarDays, IndianRupee } from "lucide-react";
+import ClickStatusBadge from "./ClickStatusBadge";
+import { CalendarDays, MapPin } from "lucide-react";
 import TableLoader from "../table/TableLoader";
 import TableEmptyState from "../table/TableEmptyState";
 
-const ConversionTable = ({ conversions, loading }) => {
+const ClickTable = ({ clicks, loading }) => {
   if (loading) {
     return <TableLoader rows={5} cols={8} />;
   }
 
-  if (!conversions?.length) {
+  if (!clicks?.length) {
     return (
       <TableEmptyState
-        title="No conversions found"
-        description="Conversion records will appear here."
+        title="No click found"
+        description="Click records will appear here."
       />
     );
   }
 
   return (
-    <div
-      className="
-        bg-white rounded-2xl
-        border border-gray-200
-        overflow-hidden
-        shadow-sm
-        font-inter
-      "
-    >
+    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm font-inter">
       {/* DESKTOP TABLE */}
       <div className="hidden lg:block overflow-x-auto">
         <table className="w-full text-xs">
@@ -42,9 +34,11 @@ const ConversionTable = ({ conversions, loading }) => {
               <th className="text-left px-6 py-4 font-semibold text-gray-600">
                 Offer
               </th>
-
               <th className="text-left px-6 py-4 font-semibold text-gray-600">
-                Payout
+                Country
+              </th>
+              <th className="text-left px-6 py-4 font-semibold text-gray-600">
+                Device
               </th>
 
               <th className="text-left px-6 py-4 font-semibold text-gray-600">
@@ -58,16 +52,16 @@ const ConversionTable = ({ conversions, loading }) => {
           </thead>
 
           <tbody>
-            {conversions.map((conversion) => (
+            {clicks.map((click) => (
               <tr
-                key={conversion._id}
+                key={click._id}
                 className="
                   border-b border-gray-100
                   hover:bg-gray-50
                   transition
                 "
               >
-                <td className="px-6 py-5">{conversion?.click?.clickId}</td>
+                <td className="px-6 py-5">{click?.clickId}</td>
                 {/* AFFILIATE */}
                 <td className="px-6 py-5">
                   <div className="flex items-center gap-3">
@@ -79,16 +73,16 @@ const ConversionTable = ({ conversions, loading }) => {
                         text-sm font-bold text-blue-700
                       "
                     >
-                      {conversion?.affiliate?.name?.charAt(0)}
+                      {click?.affiliate?.name?.charAt(0)}
                     </div>
 
                     <div>
                       <p className="font-semibold text-gray-900">
-                        {conversion?.affiliate?.name}
+                        {click?.affiliate?.name}
                       </p>
 
                       <p className="text-xs text-gray-500 mt-1">
-                        {conversion?.affiliate?.email}
+                        {click?.affiliate?.email}
                       </p>
                     </div>
                   </div>
@@ -98,26 +92,24 @@ const ConversionTable = ({ conversions, loading }) => {
                 <td className="px-6 py-5">
                   <div>
                     <p className="font-medium text-gray-900">
-                      {conversion?.offer?.title}
-                    </p>
-
-                    <p className="text-xs text-gray-500 mt-1">
-                      Affiliate Campaign
+                      {click?.offer?.title}
                     </p>
                   </div>
                 </td>
 
-                {/* REVENUE */}
+                {/* Country */}
                 <td className="px-6 py-5">
                   <div className="flex items-center gap-2 font-semibold text-gray-900">
-                    <IndianRupee size={16} className="text-green-600" />
-                    {conversion.payout}
+                    <MapPin size={16} className="text-green-600" />
+                    {click.country}
                   </div>
                 </td>
+
+                <td className="px-6 py-5">{click.device}</td>
 
                 {/* STATUS */}
                 <td className="px-6 py-5">
-                  <ConversionStatusBadge status={conversion.status} />
+                  <ClickStatusBadge status={click.isConverted} />
                 </td>
 
                 {/* DATE */}
@@ -126,7 +118,7 @@ const ConversionTable = ({ conversions, loading }) => {
                     <CalendarDays size={15} />
 
                     <span>
-                      {new Date(conversion.createdAt).toLocaleDateString()}
+                      {new Date(click.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                 </td>
@@ -137,96 +129,82 @@ const ConversionTable = ({ conversions, loading }) => {
       </div>
 
       {/* MOBILE CARDS */}
-      {/* MOBILE CARDS */}
       <div className="lg:hidden divide-y divide-gray-100">
-        {conversions.map((conversion) => (
+        {clicks.map((click) => (
           <div
-            key={conversion._id}
+            key={click._id}
             className="
-        p-4 sm:p-5
+        p-4
         hover:bg-gray-50
         transition
       "
           >
-            {/* Header */}
+            {/* HEADER */}
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div
                   className="
-              shrink-0
               w-11 h-11
               rounded-xl
               bg-blue-100
               flex items-center justify-center
-              text-sm font-bold text-blue-700
+              font-bold
+              text-blue-700
+              shrink-0
             "
                 >
-                  {conversion?.affiliate?.name?.charAt(0)}
+                  {click?.affiliate?.name?.charAt(0)}
                 </div>
 
                 <div className="min-w-0">
                   <h3 className="font-semibold text-gray-900 truncate">
-                    {conversion?.affiliate?.name}
+                    {click?.affiliate?.name}
                   </h3>
 
                   <p className="text-xs text-gray-500 truncate">
-                    {conversion?.affiliate?.email}
+                    {click?.affiliate?.email}
                   </p>
                 </div>
               </div>
 
-              <div className="shrink-0">
-                <ConversionStatusBadge status={conversion.status} />
-              </div>
+              <ClickStatusBadge status={click.isConverted} />
             </div>
 
-            {/* Offer */}
+            {/* OFFER */}
             <div className="mt-4">
-              <p className="text-xs uppercase tracking-wide text-gray-400">
-                Offer
-              </p>
+              <p className="text-xs text-gray-400 uppercase">Offer</p>
 
-              <p className="mt-1 text-sm font-medium text-gray-900 wrap-break-word">
-                {conversion?.offer?.title}
-              </p>
+              <p className="font-medium text-gray-900">{click?.offer?.title}</p>
             </div>
 
-            {/* Details */}
-            <div className="mt-4 space-y-3">
-              {/* Click ID */}
-              <div className="bg-gray-50 border border-gray-100 rounded-xl p-3">
+            {/* INFO GRID */}
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <div className="bg-gray-50 rounded-xl p-3">
                 <p className="text-xs text-gray-400 mb-1">Click ID</p>
 
-                <p className="font-medium text-gray-900 text-sm break-all">
-                  {conversion?.click?.clickId}
+                <p className="font-medium text-gray-900 break-all">
+                  {click.clickId}
                 </p>
               </div>
 
-              {/* Revenue + Date */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-gray-50 border border-gray-100 rounded-xl p-3">
-                  <p className="text-xs text-gray-400 mb-1">Payout</p>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-400 mb-1">Device</p>
 
-                  <div className="flex items-center gap-1">
-                    <IndianRupee size={14} className="text-green-600" />
+                <p className="font-medium text-gray-900">{click.device}</p>
+              </div>
 
-                    <span className="font-semibold text-gray-900">
-                      {conversion.payout}
-                    </span>
-                  </div>
-                </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-400 mb-1">Country</p>
 
-                <div className="bg-gray-50 border border-gray-100 rounded-xl p-3">
-                  <p className="text-xs text-gray-400 mb-1">Date</p>
+                <p className="font-medium text-gray-900">{click.country}</p>
+              </div>
 
-                  <div className="flex items-center gap-1 text-gray-700">
-                    <CalendarDays size={14} />
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-400 mb-1">Date</p>
 
-                    <span className="text-sm font-medium">
-                      {new Date(conversion.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
+                <p className="font-medium text-gray-900 text-sm">
+                  {new Date(click.createdAt).toLocaleDateString()}
+                </p>
               </div>
             </div>
           </div>
@@ -236,4 +214,4 @@ const ConversionTable = ({ conversions, loading }) => {
   );
 };
 
-export default ConversionTable;
+export default ClickTable;

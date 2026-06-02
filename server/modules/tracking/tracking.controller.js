@@ -30,7 +30,10 @@ export const trackClick = async (req, res) => {
 
     if (!link) return res.status(404).send("Invalid tracking link");
 
+    const clickId = nanoid(12);
+
     const clickData = {
+      clickId,
       trackingLinkId: link._id.toString(),
       affiliate: link.affiliate.toString(),
       offer: link.offer._id.toString(),
@@ -44,7 +47,10 @@ export const trackClick = async (req, res) => {
     await clickQueue.add("trackClick", clickData);
 
     //instant redirect
-    return res.redirect(link.offer.landingPageUrl);
+    const redirectUrl = new URL(link.offer.landingPageUrl);
+
+    redirectUrl.searchParams.set("clickId", clickId);
+    return res.redirect(redirectUrl.toString());
   } catch (error) {
     logger.error(error);
     return res.status(500).send("Tracking Error");

@@ -38,7 +38,6 @@ const Conversions = () => {
           status,
         },
       });
-
       setConversions(data.data || []);
       setAnalytics(data.analytics || {});
       setPagination(data.pagination);

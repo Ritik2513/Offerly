@@ -11,6 +11,7 @@ import Payouts from "./pages/Payouts";
 import AffiliateDashboard from "./pages/AffiliateDashboard";
 import Affiliates from "./pages/Affiliates";
 import RoleRoute from "./components/routes/RoleRoute";
+import Clicks from "./pages/Clicks";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
               <Route path="/offers" element={<Offers />} />
               <Route path="/create-affiliates" element={<Affiliates />} />
               <Route path="/tracking-links" element={<TrackingLinks />} />
+              <Route path="/clicks" element={<Clicks />} />
               <Route path="/conversions" element={<Conversions />} />
               <Route path="/payouts" element={<Payouts />} />
             </Route>
