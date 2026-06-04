@@ -90,6 +90,13 @@ const Login = () => {
           <p className="text-gray-500 mb-8">
             Sign in to your Offerly workspace.
           </p>
+          <p>Demo Credentials</p>
+          <p className="text-gray-500">
+           Email - admin@test.com
+          </p>
+          <p className="text-gray-500 mb-8">
+            password - 123456
+          </p>
 
           {/* Social Login */}
           {/* <div className="flex gap-4 mb-6">
