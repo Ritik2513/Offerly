@@ -2,13 +2,10 @@ import { createClient } from "redis";
 import logger from "./logger.js";
 
 export const redisClient = createClient({
-  socket: {
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
-  },
+  url: process.env.REDIS_URL,
 });
 
-redisClient.on("error", (err) => logger.info("Redis Error", err));
+redisClient.on("error", (err) => logger.error("Redis Error", err));
 
 export const connectRedis = async () => {
   await redisClient.connect();
