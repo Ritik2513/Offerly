@@ -24,7 +24,11 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  }),
+);
 app.use(cors(corsOptions));
 
 app.use(express.json());
