@@ -4,10 +4,10 @@ import { registerUser, loginUser } from "./auth.service.js";
 import { generateToken } from "../../utils/jwt.js";
 
 const cookieOptions = {
-  httpOnly: true, // JS cannot access it (XSS protection)
-  secure: process.env.NODE_ENV === "production", //https only on prod
-  sameSite: "strict",
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
 export const register = asyncHandler(async (req, res) => {
