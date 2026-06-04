@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
       setUser(data.user);
     } catch (err) {
       setUser(null);
-      navigate("/login")
     } finally {
       setLoading(false);
     }
